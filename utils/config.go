@@ -20,7 +20,7 @@ func GetConfigPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(homeDir, ".insighta", "config.json"), nil
+	return filepath.Join(homeDir, ".insighta", "credentials.json"), nil
 }
 
 // SaveConfig saves the session data to disk
