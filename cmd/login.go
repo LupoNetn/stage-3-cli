@@ -26,11 +26,28 @@ access tokens locally for future use.`,
 
 		// 2. Prepare Auth URL
 		githubClientId := os.Getenv("GITHUB_CLIENT_ID")
+		if githubClientId == "" {
+			githubClientId = "Ov23liODk6OVxUedKCw1" // Production CLI Client ID
+		}
+		
 		githubRedirectUrl := os.Getenv("GITHUB_REDIRECT_URL")
+		if githubRedirectUrl == "" {
+			githubRedirectUrl = "http://localhost:8484/callback"
+		}
+		
 		githubAuthUrl := os.Getenv("GITHUB_OAUTH_AUTHORIZE_URL")
+		if githubAuthUrl == "" {
+			githubAuthUrl = "https://github.com/login/oauth/authorize"
+		}
 
 		authURL := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=user:email&state=%s&code_challenge=%s&code_challenge_method=S256", 
 			githubAuthUrl, githubClientId, githubRedirectUrl, state, codeChallenge)
+
+		// 3. Backend URL for token exchange
+		backendUrl := os.Getenv("DEV_BACKEND_GITHUB_AUTH_URL")
+		if backendUrl == "" {
+			backendUrl = "https://stage-3-backend-azure.vercel.app/auth/github/cli"
+		}
 	    
 		// 3. Open Browser
 		if err := utils.OpenBrowser(authURL); err != nil {
@@ -53,7 +70,6 @@ access tokens locally for future use.`,
 		// 5. Exchange code for token with Backend
 		stopSpinner = utils.StartSpinner("Exchanging token with backend...")
 		
-		backendUrl := os.Getenv("DEV_BACKEND_GITHUB_AUTH_URL")
 		respData, err := utils.MakeRequest(utils.RequestOptions{
 			Method: "POST",
 			URL:    backendUrl,

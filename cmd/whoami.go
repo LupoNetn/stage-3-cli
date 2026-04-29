@@ -27,7 +27,7 @@ to verify your authentication status and display your account information.`,
 		
 		backendBaseUrl := os.Getenv("DEV_BACKEND_BASE_URL")
 		if backendBaseUrl == "" {
-			backendBaseUrl = "http://localhost:7000" // Fallback
+			backendBaseUrl = "https://stage-3-backend-azure.vercel.app"
 		}
 
 		respData, err := utils.MakeRequest(utils.RequestOptions{
