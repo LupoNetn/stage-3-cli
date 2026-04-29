@@ -141,7 +141,7 @@ func doRequestWithRetry(opts RequestOptions, retryOn401 bool) (*http.Response, e
 func refreshTokens(refreshToken string) (map[string]any, error) {
 	backendBaseUrl := os.Getenv("DEV_BACKEND_BASE_URL")
 	if backendBaseUrl == "" {
-		backendBaseUrl = "http://localhost:7000"
+		backendBaseUrl = "https://stage-3-backend-azure.vercel.app"
 	}
 
 	body := map[string]string{"refresh_token": refreshToken}
