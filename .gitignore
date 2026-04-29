@@ -1,0 +1,5 @@
+.env
+insighta
+insighta.exe
+vendor/
+credentials.json

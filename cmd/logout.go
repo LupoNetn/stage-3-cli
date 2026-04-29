@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"time"
+	"os"
 
 	"github.com/luponetn/insighta-cli/utils"
 	"github.com/spf13/cobra"
@@ -17,16 +17,30 @@ session data from your machine. Once logged out, you will need to run
 'login' again to access protected features.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// 1. Check if logged in
-		_, err := utils.LoadConfig()
+		cfg, err := utils.LoadConfig()
 		if err != nil {
 			fmt.Println("\nYou are not currently logged in.")
 			return
 		}
 
-		// 2. Perform Logout with Spinner
+		// 2. Perform Logout
 		stopSpinner := utils.StartSpinner("Logging you out and clearing session...")
-		time.Sleep(500 * time.Millisecond)
+		
+		// Invalidate on backend
+		backendUrl := os.Getenv("DEV_BACKEND_BASE_URL")
+		if backendUrl == "" {
+			backendUrl = "https://stage-3-backend-azure.vercel.app"
+		}
 
+		// Call logout endpoint (it expects refresh_token in JSON body)
+		utils.MakeRequest(utils.RequestOptions{
+			Method: "POST",
+			URL:    backendUrl + "/auth/logout",
+			Body:   map[string]string{"refresh_token": cfg.RefreshToken},
+			Token:  cfg.AccessToken,
+		})
+
+		// Clear local data regardless of backend success
 		err = utils.ClearConfig()
 		stopSpinner()
 
@@ -35,7 +49,7 @@ session data from your machine. Once logged out, you will need to run
 			return
 		}
 
-		fmt.Println("\nSuccessfully logged out. Session data cleared.")
+		fmt.Println("\nSuccessfully logged out. Session data invalidated.")
 	},
 }
 
