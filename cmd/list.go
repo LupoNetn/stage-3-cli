@@ -30,7 +30,7 @@ Location for each profile.`,
 		
 		backendBaseUrl := os.Getenv("DEV_BACKEND_BASE_URL")
 		if backendBaseUrl == "" {
-			backendBaseUrl = "http://localhost:7000" // Fallback
+			backendBaseUrl = "https://stage-3-backend-azure.vercel.app"
 		}
 
 		queryParams := url.Values{}
