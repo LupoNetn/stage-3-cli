@@ -162,6 +162,6 @@ func refreshTokens(refreshToken string) (map[string]any, error) {
 		return nil, fmt.Errorf("failed to decode refresh response: %w", err)
 	}
 
-	// The refresh endpoint returns a flat map, not nested in "data"
+	// The refresh endpoint returns a flat map
 	return result, nil
 }

@@ -21,14 +21,14 @@ var exportCmd = &cobra.Command{
 			return
 		}
 
-		// 1. Load Session
+		//  Load Session
 		cfg, err := utils.LoadConfig()
 		if err != nil {
 			fmt.Println("\nYou are not logged in. Please run 'login' first.")
 			return
 		}
 
-		// 2. Prepare Query Params
+		//  Prepare Query Params
 		queryParams := url.Values{}
 		queryParams.Add("format", format)
 		
@@ -60,7 +60,7 @@ var exportCmd = &cobra.Command{
 			queryParams.Add("limit", strconv.Itoa(limit))
 		}
 
-		// 3. Export Profiles
+		//  Export Profiles
 		stopSpinner := utils.StartSpinner("Exporting profiles...")
 		
 		backendBaseUrl := os.Getenv("DEV_BACKEND_BASE_URL")
@@ -80,7 +80,7 @@ var exportCmd = &cobra.Command{
 			return
 		}
 
-		// 4. Save to Disk
+		//  Save to Disk
 		err = os.WriteFile(filename, data, 0644)
 		if err != nil {
 			fmt.Printf("\nFailed to save file: %v\n", err)

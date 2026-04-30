@@ -17,7 +17,7 @@ var searchCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		query := args[0]
 
-		// 1. Load Session
+		//  Load Session
 		cfg, err := utils.LoadConfig()
 		if err != nil {
 			fmt.Println("\nYou are not logged in. Please run 'login' first.")
